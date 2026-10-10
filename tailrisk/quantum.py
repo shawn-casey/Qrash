@@ -1,6 +1,6 @@
 """Coherent portfolio oracles and instrumented Qiskit amplitude estimation."""
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from time import perf_counter
 
 import numpy as np
@@ -17,6 +17,7 @@ from qiskit_algorithms import (
     MaximumLikelihoodAmplitudeEstimation,
 )
 
+from tailrisk.classical import tilted_proposal
 from tailrisk.models import LossGrid
 
 BASIS = ["rz", "sx", "x", "cx"]
@@ -83,6 +84,29 @@ def tail_oracle(grid: LossGrid, threshold: float, arithmetic=False) -> Oracle:
     circuit.compose(adder.inverse(), range(adder.num_qubits), inplace=True)
     workspace = [i for i in range(n, circuit.num_qubits) if i != objective]
     return Oracle(circuit, objective, n, workspace, "arithmetic")
+
+
+def importance_oracle(grid: LossGrid, threshold: float):
+    """Encode reweighted tail payoffs under the classical IS proposal.
+
+    If h_i = p_i f_i / q_i and B = max(h_i), the objective amplitude
+    is E_q[h/B]. Multiplying the estimated probability by B recovers
+    E_p[f]. No tail expectation is used to construct this circuit.
+    """
+    proposal, tilt = tilted_proposal(grid, threshold)
+    weighted = np.divide(
+        grid.probabilities * grid.tail_values(threshold),
+        proposal,
+        out=np.zeros_like(proposal),
+        where=proposal > 0,
+    )
+    scale = float(weighted.max())
+    if scale == 0:
+        scale = 1.0
+    oracle = direct_oracle(
+        replace(grid, probabilities=proposal), weighted / scale, kind="importance"
+    )
+    return oracle, {"scale": scale, "tilt": tilt}
 
 
 def verify_oracle(oracle: Oracle) -> dict:

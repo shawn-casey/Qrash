@@ -25,6 +25,9 @@ def main():
     commands.add_parser("figures", help="Render figures from saved experiments")
     scale_parser = commands.add_parser("scaling", help="Matched N and scenario-size experiments")
     scale_parser.add_argument("--replicates", type=int, default=30)
+    commands.add_parser(
+        "importance", help="Compare importance-weighted quantum and classical estimators"
+    )
     args = parser.parse_args()
     if args.command == "prepare-data":
         result = prepare_data()
@@ -47,6 +50,10 @@ def main():
 
         matched_budget()
         scenario_scaling(replicates=args.replicates)
+    elif args.command == "importance":
+        from tailrisk.importance import benchmark_importance
+
+        benchmark_importance()
     elif args.command == "figures":
         from tailrisk.figures import render_all
 

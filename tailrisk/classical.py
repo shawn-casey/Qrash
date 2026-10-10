@@ -1,5 +1,6 @@
 """Classical estimators of the same finite probability distribution used by QAE."""
 
+from dataclasses import replace
 from time import perf_counter
 
 import numpy as np
@@ -60,15 +61,19 @@ def estimate(grid: LossGrid, threshold: float, method: str, count: int, seed: in
     elif method == "Sobol":
         indices = sobol_indices(grid, count, seed)
         observations = values[indices]
-    elif method == "IS":
+    elif method in {"IS", "IS-Sobol"}:
         proposal, tilt = tilted_proposal(grid, threshold)
         setup_seconds = perf_counter() - start
-        indices = rng.choice(len(values), count, p=proposal)
+        indices = (
+            sobol_indices(replace(grid, probabilities=proposal), count, seed)
+            if method == "IS-Sobol"
+            else rng.choice(len(values), count, p=proposal)
+        )
         ratios = grid.probabilities[indices] / proposal[indices]
         observations = values[indices] * ratios
         ess = float(ratios.sum() ** 2 / np.dot(ratios, ratios))
     else:
-        raise ValueError("method must be MC, Sobol, or IS")
+        raise ValueError("method must be MC, Sobol, IS, or IS-Sobol")
     return {
         "method": method,
         "estimate": float(np.mean(observations)),

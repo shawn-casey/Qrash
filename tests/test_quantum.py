@@ -6,6 +6,7 @@ from tailrisk.models import LossModel, make_grid
 from tailrisk.quantum import (
     RecordedIQAE,
     direct_oracle,
+    importance_oracle,
     quantum_var,
     run_iqae,
     run_mlae,
@@ -34,6 +35,24 @@ def test_nonuniform_payoff_rotation_and_endianness(grid):
     assert verify_oracle(oracle)["objective_probability"] == pytest.approx(
         grid.probabilities @ values, abs=1e-10
     )
+
+
+@pytest.mark.parametrize("threshold", [-1.0, 0.08, 1.0])
+def test_importance_oracle_recovers_tail_without_using_its_expectation(grid, threshold, monkeypatch):
+    truth = grid.tail(threshold)
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("Oracle construction must not ask for the target expectation")
+
+    monkeypatch.setattr(type(grid), "tail", forbidden)
+    oracle, metadata = importance_oracle(grid, threshold)
+    probability = verify_oracle(oracle)["objective_probability"]
+    assert metadata["scale"] * probability == pytest.approx(truth, abs=1e-10)
+    theta = np.arcsin(np.sqrt(probability))
+    for k in [1, 2]:
+        circuit = RecordedIQAE(0.03, 0.05).construct_circuit(oracle.problem, k)
+        amplified = Statevector.from_instruction(circuit).probabilities([oracle.objective])[1]
+        assert amplified == pytest.approx(np.sin((2 * k + 1) * theta) ** 2, abs=1e-9)
 
 
 def test_arithmetic_unequal_weights():

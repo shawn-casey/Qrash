@@ -31,7 +31,7 @@ def test_conditional_sobol_recovers_joint_distribution(grid):
     assert np.max(np.abs(frequency - grid.probabilities)) < 0.0003
 
 
-@pytest.mark.parametrize("method", ["MC", "Sobol", "IS"])
+@pytest.mark.parametrize("method", ["MC", "Sobol", "IS", "IS-Sobol"])
 def test_classical_estimates_converge(grid, method):
     result = estimate(grid, 0.1, method, 65536, 17)
     assert abs(result["estimate"] - grid.tail(0.1)) < 0.003

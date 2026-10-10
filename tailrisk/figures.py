@@ -13,6 +13,7 @@ from matplotlib.ticker import NullFormatter, PercentFormatter
 from tailrisk.experiments import ROOT
 
 COLORS = {"MC": "#63758c", "Sobol": "#16806a", "IS": "#dd8833", "MLAE": "#7754ba"}
+COLORS.update({"IS-MLAE": "#6929c4", "IS-Sobol": "#005d5d"})
 
 
 def accuracy_table(summary, target):
@@ -83,6 +84,8 @@ def benchmark_figure(summary, scenario=None):
         data = summary[summary["scenario"] == name]
         for method, color in COLORS.items():
             group = data[data["method"] == method].sort_values("queries")
+            if group.empty:
+                continue
             ax.plot(group["queries"], group["rmse"], "o-", label=method, color=color)
             ax.fill_between(
                 group["queries"], group["rmse_low"], group["rmse_high"], color=color, alpha=0.12
@@ -182,6 +185,36 @@ def render_all():
         )
         fig.savefig(output / "scenario_scaling.png", dpi=180)
         plt.close(fig)
+    importance = ROOT / "results/importance/summary.csv"
+    if importance.exists():
+        fig = importance_figure(pd.read_csv(importance))
+        fig.savefig(output / "importance.png", dpi=180)
+        plt.close(fig)
+
+
+def importance_figure(summary):
+    style()
+    fig, axes = plt.subplots(1, 2, figsize=(13, 5), layout="constrained", sharey=True)
+    groups = [("MC", "MLAE", "IS-MLAE"), ("IS", "Sobol", "IS-Sobol", "IS-MLAE")]
+    for ax, methods in zip(axes, groups):
+        for method in methods:
+            group = summary[summary.method == method].sort_values("queries")
+            ax.plot(group.queries, 100 * group.rmse, "o-", color=COLORS[method], label=method)
+            ax.fill_between(
+                group.queries,
+                100 * group.rmse_low,
+                100 * group.rmse_high,
+                color=COLORS[method],
+                alpha=0.12,
+            )
+        ax.set(xscale="log", yscale="log", xlabel="Actual samples or A/A-dagger calls")
+        ax.grid(alpha=0.18, which="both")
+        ax.legend(frameon=False, fontsize=10)
+    axes[0].set(
+        title="Importance weighting improves quantum accuracy", ylabel="RMSE (percentage points)"
+    )
+    axes[1].set(title="Strong classical controls remain visible")
+    return fig
 
 
 def budget_scaling_figure(summary, include_importance=True):

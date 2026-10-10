@@ -241,7 +241,7 @@ def summarize(frame, seed=17):
                 "bias": float(np.mean(errors)),
                 "median_seconds": float(group["seconds"].median()),
                 "median_setup_seconds": float(group["setup_seconds"].median())
-                if keys[1] == "IS"
+                if keys[1] in {"IS", "IS-Sobol"}
                 else 0.0,
             }
         )

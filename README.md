@@ -47,6 +47,12 @@ For the exact recorded dependency environment, install `requirements.lock` inste
 
 ![Estimator benchmark](results/figures/benchmark.png)
 
+## Improved quantum estimator
+
+Importance-weighted MLAE combines the same proposal used by classical importance sampling with coherent payoff rotations. In 30-trial ideal-circuit experiments at N=4,352, it has **26.2x lower RMSE than ordinary MC and 3.5x lower RMSE than ordinary IS**. This is accuracy per counted query, not runtime. Importance-weighted Sobol and exact summation remain stronger on this small grid. See [construction, all baselines, and limitations](docs/IMPORTANCE.md).
+
+![Importance-weighted comparison](results/figures/importance.png)
+
 ## The experiment
 
 We use the **BusEq** (business equipment) and **Enrgy** (energy) columns from the value-weighted Kenneth French 12-industry daily file, January 2000 through December 2025. The saved calibration uses 6,539 daily observations and 6,530 overlapping ten-day windows. The current source archive identifies the August 2026 CRSP database vintage.
@@ -73,6 +79,9 @@ python main.py studies
 
 # Matched-N comparison and scenario-count scaling.
 python main.py scaling
+
+# Compare quantum importance weighting with classical controls.
+python main.py importance
 
 # Generate plots from saved results.
 python main.py figures

@@ -1,5 +1,7 @@
 # Scaling benchmark
 
+A subsequent [importance-weighted quantum estimator](IMPORTANCE.md) improves on plain MLAE and ordinary IS. This document retains the original unweighted comparison unchanged.
+
 ## What N means
 
 N is a computation budget. One classical unit is one sampled scenario. One quantum unit is one coherent application of A or its inverse. A shot at Grover power k costs 2k+1 such units, including the initial A. These counts are numerically matched, not equal in runtime or hardware cost. S denotes the number of joint grid scenarios. The number of assets remains two.

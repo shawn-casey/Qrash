@@ -1,0 +1,56 @@
+{
+  "environment": {
+    "python": "3.12.14",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "packages": {
+      "qiskit": "2.5.2",
+      "qiskit-algorithms": "0.4.0",
+      "qiskit-aer": "0.17.2",
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "pandas": "3.0.6"
+    },
+    "core_source_sha256": "9976443e4d0062b95f04682b8f228d3d20a5b65973361e7c75474f121484590c",
+    "created_at_utc": "2026-10-10T20:07:41.142844+00:00"
+  },
+  "seed": 20261015,
+  "replicates": 30,
+  "levels": 6,
+  "shots_per_circuit": 64,
+  "schedule": "[0] + [2**i for i in range(level)], level=0,...,5",
+  "model": "Student copula, 64 scenarios, 50/50 weights, 10% threshold",
+  "truth": 0.00629566493614726,
+  "importance": {
+    "scale": 0.040449935311721044,
+    "tilt": 2.5553453662669723
+  },
+  "setup_seconds": 0.00036154198460280895,
+  "verification": {
+    "objective_probability": 0.15564091481558115,
+    "workspace_nonzero_probability": 0.0
+  },
+  "resources": {
+    "qubits": 7,
+    "depth": 534,
+    "cx": 121,
+    "gates": 553,
+    "compilation_seconds": 0.016240291006397456,
+    "basis": [
+      "rz",
+      "sx",
+      "x",
+      "cx"
+    ],
+    "optimization_level": 1,
+    "seed_transpiler": 17
+  },
+  "classical_is_variance": 0.00016412902486742688,
+  "reused": "MC, IS, MLAE from results/scaling/budget_estimates.csv",
+  "new": "IS-MLAE, Sobol, IS-Sobol: 30 new independent trials per budget",
+  "budget": "MC/IS use exactly quantum A/A-dagger calls; Sobol methods get the next power of two, favoring classical",
+  "scope": "Ideal finite-shot Aer simulation; table-dependent preparation and payoff bounds; no runtime advantage",
+  "development_pilots": [
+    "One direct MLAE pilot at 33216 calls, seed 20261013; not a replicated benchmark",
+    "One IS-MLAE pilot at 4352 calls, seed 20261014; benchmark uses fresh seeds"
+  ]
+}

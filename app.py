@@ -15,6 +15,7 @@ from tailrisk.figures import (
     budget_scaling_figure,
     distribution_figure,
     grid_figure,
+    importance_figure,
     noise_figure,
     scenario_scaling_figure,
 )
@@ -197,6 +198,40 @@ with portfolio:
         )
 
 with benchmark_tab:
+    importance_path = ROOT / "results/importance/summary.csv"
+    if importance_path.exists():
+        st.subheader("Improved quantum estimator: importance weighting")
+        importance = pd.read_csv(importance_path)
+        st.write(
+            "Prepare a distribution that emphasizes losses, encode corrected importance weights "
+            "in the objective qubit, then use amplitude estimation to recover the original risk. "
+            "The quantum and classical IS methods share the same proposal."
+        )
+        show_figure(importance_figure(importance))
+        last = importance[importance.level == importance.level.max()].set_index("method")
+        cols = st.columns(3)
+        cols[0].metric("IS-MLAE calls", f"{int(last.loc['IS-MLAE', 'queries']):,}")
+        cols[1].metric(
+            "Lower RMSE vs MC", f"{last.loc['MC', 'rmse'] / last.loc['IS-MLAE', 'rmse']:.1f}x"
+        )
+        cols[2].metric(
+            "Lower RMSE vs IS", f"{last.loc['IS', 'rmse'] / last.loc['IS-MLAE', 'rmse']:.1f}x"
+        )
+        st.caption(
+            "Saved ideal-circuit experiments, 30 trials per point; 95% bootstrap RMSE bands. "
+            "MC, IS and plain MLAE reuse the matched-N study. IS-MLAE and both Sobol curves "
+            "are new trials. Sobol gets the next power-of-two budget; actual counts are plotted."
+        )
+        st.write(
+            "This is an accuracy-per-query improvement over MC and ordinary IS. "
+            "IS-Sobol remains stronger here, and exact summation solves the small table directly. "
+            "No wall-clock or hardware advantage is claimed."
+        )
+        with st.expander("Importance benchmark: all methods and actual budgets"):
+            st.dataframe(
+                importance[["method", "queries", "rmse", "rmse_low", "rmse_high"]],
+                hide_index=True,
+            )
     st.subheader("Classical vs quantum as N grows")
     scaling = ROOT / "results/scaling"
     if (scaling / "budget_summary.csv").exists():
