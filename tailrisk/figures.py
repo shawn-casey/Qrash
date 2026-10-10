@@ -8,7 +8,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from matplotlib.ticker import PercentFormatter
+from matplotlib.ticker import NullFormatter, PercentFormatter
 
 from tailrisk.experiments import ROOT
 
@@ -171,3 +171,87 @@ def render_all():
             fig.savefig(output / f"{name}.png", dpi=180)
             plt.close(fig)
     print(f"Figures saved to {output}")
+    scaling = ROOT / "results/scaling"
+    if (scaling / "scenario_summary.csv").exists():
+        fig = budget_scaling_figure(pd.read_csv(scaling / "budget_summary.csv"))
+        fig.savefig(output / "budget_scaling.png", dpi=180)
+        plt.close(fig)
+        fig = scenario_scaling_figure(
+            pd.read_csv(scaling / "scenario_summary.csv"),
+            pd.read_csv(scaling / "scenario_resources.csv"),
+        )
+        fig.savefig(output / "scenario_scaling.png", dpi=180)
+        plt.close(fig)
+
+
+def budget_scaling_figure(summary, include_importance=True):
+    """Measured error at equal numerical N, with units and uncertainty explicit."""
+    style()
+    fig, ax = plt.subplots(figsize=(10, 4.8), layout="constrained")
+    methods = ["MC", "MLAE", "IS"] if include_importance else ["MC", "MLAE"]
+    labels = {
+        "MC": "Classical Monte Carlo",
+        "MLAE": "Quantum MLAE",
+        "IS": "Classical importance sampling",
+    }
+    for method in methods:
+        group = summary[summary.method == method].sort_values("queries")
+        ax.plot(
+            group.queries,
+            100 * group.rmse,
+            "o-",
+            color=COLORS[method],
+            label=labels[method],
+            linewidth=2,
+        )
+        ax.fill_between(
+            group.queries,
+            100 * group.rmse_low,
+            100 * group.rmse_high,
+            color=COLORS[method],
+            alpha=0.12,
+        )
+    reference = summary[summary.method == "MC"].sort_values("queries")
+    ax.plot(
+        reference.queries,
+        100 * reference.mc_theoretical_rmse,
+        "--",
+        color="#63758c",
+        linewidth=1.2,
+        label="Exact MC RMSE: sqrt(p(1-p)/N)",
+    )
+    ax.set(
+        xscale="log",
+        yscale="log",
+        xlabel="N = classical samples or quantum A/A-dagger calls",
+        ylabel="RMSE (percentage points of probability)",
+        title="Same N, same 64-scenario distribution, 30 trials per point",
+    )
+    ax.set_xticks(reference.queries, [f"{n:,}" for n in reference.queries])
+    ax.xaxis.set_minor_formatter(NullFormatter())
+    ax.grid(alpha=0.18, which="both")
+    ax.legend(frameon=False, fontsize=10)
+    return fig
+
+
+def scenario_scaling_figure(summary, resources):
+    style()
+    fig, axes = plt.subplots(1, 2, figsize=(12, 4.6), layout="constrained")
+    for method in ["MC", "MLAE", "IS"]:
+        group = summary[summary.method == method].sort_values("S")
+        axes[0].plot(group.S, group.median_seconds, "o-", label=method, color=COLORS[method])
+    axes[0].plot(
+        resources.S, resources.exact_median_seconds, "o--", color="#16806a", label="Exact grid sum"
+    )
+    axes[0].set(
+        yscale="log", ylabel="Measured median seconds", title="Fixed N = 576: simulator time"
+    )
+    axes[0].legend(frameon=False, ncols=2)
+    axes[1].plot(resources.S, resources.cx, "o-", color=COLORS["MLAE"])
+    axes[1].set(ylabel="CX gates in one A circuit", title="State preparation and marking included")
+    for ax in axes:
+        ax.set(xscale="log", xlabel="S = number of joint scenarios")
+        ax.set_xticks(resources.S, [str(n) for n in resources.S])
+        ax.xaxis.set_minor_formatter(NullFormatter())
+        ax.grid(alpha=0.18, which="both")
+    return fig

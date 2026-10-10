@@ -105,7 +105,7 @@ At the largest Student 10% budgets, median classical estimator times are roughly
 
 `results/timing.json` separately records a cold IQAE run, model loading, grid construction, continuous reference evaluation, and exact grid evaluation. Exact enumeration takes tens of microseconds in that profile after the PMF exists. Model fitting and data acquisition are excluded and explicitly identified as such.
 
-All 33 tests pass in a fresh environment installed from `requirements.lock`. The saved benchmark was checked for 30 replicates per point and reconciled against all 720 quantum execution ledgers. Tests also verify both oracle implementations, workspace cleanup, Grover amplification, discrete ES, classical target distributions, confidence-aware search behavior, and stale-result handling in the app.
+The original 33-test suite passed in a fresh environment installed from `requirements.lock`. The scaling extension adds three evidence audits, bringing the passing suite to 36 tests. The saved original benchmark was checked for 30 replicates per point and reconciled against all 720 quantum execution ledgers. Tests also verify both oracle implementations, workspace cleanup, Grover amplification, discrete ES, classical target distributions, confidence-aware search behavior, and stale-result handling in the app. See [the matched-N and scenario-count study](SCALING.md) for the newer comparisons.
 
 ## Next technical steps
 

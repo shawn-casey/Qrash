@@ -12,9 +12,11 @@ from tailrisk.experiments import ROOT, load_model
 from tailrisk.figures import (
     accuracy_table,
     benchmark_figure,
+    budget_scaling_figure,
     distribution_figure,
     grid_figure,
     noise_figure,
+    scenario_scaling_figure,
 )
 from tailrisk.models import make_grid
 
@@ -195,7 +197,49 @@ with portfolio:
         )
 
 with benchmark_tab:
-    st.subheader("Does amplification buy accuracy?")
+    st.subheader("Classical vs quantum as N grows")
+    scaling = ROOT / "results/scaling"
+    if (scaling / "budget_summary.csv").exists():
+        matched = pd.read_csv(scaling / "budget_summary.csv")
+        st.write(
+            "N is the computation budget: classical samples or quantum A/A-dagger calls. "
+            "These counts match exactly here, but a quantum call costs more than a sample. "
+            "S is the number of scenarios, held at 64 for this comparison."
+        )
+        show_figure(budget_scaling_figure(matched))
+        st.caption(
+            "Student model, 50/50 weights, 10% loss threshold. 30 independent trials per point. "
+            "Shaded bands: bootstrap 95% RMSE intervals. Lower is better. "
+            "Quantum rows reuse the recorded MLAE experiment; MC and IS use the exact same N."
+        )
+        endpoint = matched[matched.queries == matched.queries.max()].set_index("method")
+        cols = st.columns(3)
+        cols[0].metric("N for both methods", f"{int(endpoint.queries.iloc[0]):,}")
+        cols[1].metric("Monte Carlo RMSE", f"{100 * endpoint.loc['MC', 'rmse']:.3f} pp")
+        cols[2].metric("Quantum MLAE RMSE", f"{100 * endpoint.loc['MLAE', 'rmse']:.3f} pp")
+        st.write(
+            "Importance sampling remains a stronger classical baseline in this experiment. "
+            "Query savings do not establish a wall-clock speedup."
+        )
+        with st.expander("Matched-N table and accuracy target"):
+            st.dataframe(
+                matched[["method", "queries", "rmse", "rmse_low", "rmse_high"]], hide_index=True
+            )
+            st.dataframe(accuracy_table(matched, 0.002), hide_index=True)
+        if (scaling / "scenario_summary.csv").exists():
+            with st.expander("What grows when there are more scenarios?"):
+                show_figure(
+                    scenario_scaling_figure(
+                        pd.read_csv(scaling / "scenario_summary.csv"),
+                        pd.read_csv(scaling / "scenario_resources.csv"),
+                    )
+                )
+                st.caption(
+                    "S = 16, 64, 256 scenarios, with N = 576 fixed. This refines a two-asset grid; "
+                    "it does not add assets. Each grid has its own exact reference probability. "
+                    "Times are simulator/CPU measurements, not quantum hardware times."
+                )
+    st.subheader("Broader comparison with strong classical baselines")
     summary_path = ROOT / "results/benchmark/summary.csv"
     if summary_path.exists():
         summary = pd.read_csv(summary_path)

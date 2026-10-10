@@ -23,6 +23,8 @@ def main():
     bench_parser.add_argument("--output", type=Path, default=ROOT / "results/benchmark")
     commands.add_parser("studies", help="Run grid, oracle, IQAE, VaR, ES, and noise studies")
     commands.add_parser("figures", help="Render figures from saved experiments")
+    scale_parser = commands.add_parser("scaling", help="Matched N and scenario-size experiments")
+    scale_parser.add_argument("--replicates", type=int, default=30)
     args = parser.parse_args()
     if args.command == "prepare-data":
         result = prepare_data()
@@ -40,6 +42,11 @@ def main():
         benchmark(args.output, args.replicates, levels=args.levels)
     elif args.command == "studies":
         studies()
+    elif args.command == "scaling":
+        from tailrisk.scaling import matched_budget, scenario_scaling
+
+        matched_budget()
+        scenario_scaling(replicates=args.replicates)
     elif args.command == "figures":
         from tailrisk.figures import render_all
 

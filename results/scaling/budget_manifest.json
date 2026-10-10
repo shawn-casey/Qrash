@@ -1,0 +1,30 @@
+{
+  "environment": {
+    "python": "3.12.14",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "packages": {
+      "qiskit": "2.5.2",
+      "qiskit-algorithms": "0.4.0",
+      "qiskit-aer": "0.17.2",
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "pandas": "3.0.6"
+    },
+    "core_source_sha256": "32d28d87b80876d29d8864296ef28974fa1fedea10416c72e7eaad896fe8db32",
+    "created_at_utc": "2026-10-10T19:46:03.137796+00:00"
+  },
+  "seed": 20261011,
+  "quantum_source": "results/benchmark/estimates.csv: student_0.100 MLAE rows",
+  "quantum_reused_not_rerun": true,
+  "N": "MC/IS samples or MLAE A/A-dagger calls, matched numerically, not equal time",
+  "S": 64,
+  "threshold": 0.1,
+  "truth": 0.00629566493614726,
+  "replicates": 30,
+  "empirical_log_log_slopes": {
+    "IS": -0.5360493112860168,
+    "MC": -0.5295047478669439,
+    "MLAE": -0.8502494962086653
+  },
+  "slope_interpretation": "Descriptive fit to six measured points; not an asymptotic proof"
+}

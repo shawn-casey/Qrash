@@ -1,0 +1,34 @@
+{
+  "environment": {
+    "python": "3.12.14",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "packages": {
+      "qiskit": "2.5.2",
+      "qiskit-algorithms": "0.4.0",
+      "qiskit-aer": "0.17.2",
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "pandas": "3.0.6"
+    },
+    "core_source_sha256": "32d28d87b80876d29d8864296ef28974fa1fedea10416c72e7eaad896fe8db32",
+    "created_at_utc": "2026-10-10T19:46:03.529490+00:00"
+  },
+  "seed": 20261012,
+  "bits": [
+    2,
+    3,
+    4
+  ],
+  "replicates": 30,
+  "N": 576,
+  "schedule": [
+    0,
+    1,
+    2
+  ],
+  "shots": 64,
+  "S": "Number of joint grid scenarios = 2**(2 * bits_per_asset)",
+  "model": "Student-t marginals and Gaussian copula; 50/50 weights; 10% loss threshold",
+  "timing": "Estimator wall time includes first-use compilation, cached for later replicates; grid and oracle construction reported separately",
+  "comparison": "Each grid has its own exact truth. Refinement changes discretization, not the number of assets."
+}

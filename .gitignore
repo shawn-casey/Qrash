@@ -13,3 +13,5 @@ docs/VIDEO_SCRIPT.md
 docs/SUBMISSION.md
 The Prompts*.pdf
 dist/
+presentation/
+.chart-data-*/

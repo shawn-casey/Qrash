@@ -6,6 +6,14 @@ How likely is a portfolio to lose at least 10% over ten trading days? TailRisk L
 
 Built for GT Qiskit Fall Fest 2026, Theme 1: Quantum Impact.
 
+## Classical versus quantum as N grows
+
+The [scaling benchmark](docs/SCALING.md) matches N exactly: classical samples versus quantum A/A-dagger calls. At N = 4,352, measured quantum MLAE RMSE is about 5.0 times lower than ordinary Monte Carlo across 30 trials. Importance sampling still performs better. Equal query counts do not imply equal runtime.
+
+A separate study increases the number of scenarios S from 16 to 256 at fixed N = 576. It exposes the growing state-preparation and marking cost, with CPU/simulator timings reported separately. Both studies use two assets.
+
+![Error versus matched N](results/figures/budget_scaling.png)
+
 ## Run it
 
 Python 3.12 is the tested environment. No IBM account, API key, paid service, or quantum hardware is needed.
@@ -63,6 +71,9 @@ python main.py benchmark
 # Oracle, grid, IQAE, VaR, expected-shortfall, and noise experiments.
 python main.py studies
 
+# Matched-N comparison and scenario-count scaling.
+python main.py scaling
+
 # Generate plots from saved results.
 python main.py figures
 
@@ -100,6 +111,7 @@ Tests verify compounding, missing-data handling, grid cell masses, discrete expe
 | `tailrisk/quantum.py` | Oracles, QAE, query ledger, VaR/ES |
 | `tailrisk/live.py` | Local process entry point for live circuit runs |
 | `tailrisk/experiments.py` | Reproducible experiments and metadata |
+| `tailrisk/scaling.py` | Matched budgets and scenario-count experiments |
 | `tailrisk/figures.py` | Plots from measured data |
 | `tests/` | Numerical and circuit correctness |
 | `results/` | Raw results, execution ledgers, and figures |
