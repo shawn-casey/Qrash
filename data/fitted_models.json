@@ -1,0 +1,66 @@
+{
+  "provenance": {
+    "url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/12_Industry_Portfolios_daily_CSV.zip",
+    "archive_sha256": "cde9864260d22e42fdbd29a8a1272b8a0ab67aaf4d8cc6fd7898e11c448f06b1",
+    "processed_at_utc": "2026-10-10T18:33:02.333391+00:00",
+    "archive_modified_at_utc": "2026-10-10T18:29:15.888584+00:00",
+    "table": "Average Value Weighted Returns -- Daily",
+    "units": "decimal simple returns (source percentages divided by 100)",
+    "source_header": [
+      "This file was created using the 202608 CRSP database.",
+      "It contains value- and equal-weighted returns for 12 industry portfolios.",
+      "",
+      "The portfolios are constructed at the end of June.",
+      "",
+      "Missing data are indicated by -99.99 or -999.",
+      "",
+      ""
+    ]
+  },
+  "industries": [
+    "BusEq",
+    "Enrgy"
+  ],
+  "industry_labels": [
+    "Business equipment",
+    "Energy"
+  ],
+  "start": "2000-01-03",
+  "end": "2025-12-31",
+  "daily_observations": 6539,
+  "ten_day_windows": 6530,
+  "holding_period_trading_days": 10,
+  "calibration": "Full-period descriptive calibration; not an out-of-sample forecast",
+  "overlapping_windows": true,
+  "models": {
+    "gaussian": {
+      "family": "gaussian",
+      "location": [
+        -0.004433876553071078,
+        -0.004426703301520381
+      ],
+      "scale": [
+        0.047376168096569464,
+        0.05183015188521476
+      ],
+      "rho": 0.41340245520794416,
+      "df": null
+    },
+    "student": {
+      "family": "student",
+      "location": [
+        -0.007411785934838231,
+        -0.0056140526274372085
+      ],
+      "scale": [
+        0.03461657766627924,
+        0.03833449848849985
+      ],
+      "rho": 0.39354308037040864,
+      "df": [
+        4.053455887151356,
+        4.507694264056151
+      ]
+    }
+  }
+}

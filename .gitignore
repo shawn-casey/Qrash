@@ -1,0 +1,15 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.DS_Store
+*.egg-info/
+data/raw/
+tmp/
+.streamlit/secrets.toml
+GAME_PLAN.md
+docs/VIDEO_SCRIPT.md
+docs/SUBMISSION.md
+The Prompts*.pdf
+dist/

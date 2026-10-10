@@ -1,0 +1,45 @@
+{
+  "environment": {
+    "python": "3.12.14",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "packages": {
+      "qiskit": "2.5.2",
+      "qiskit-algorithms": "0.4.0",
+      "qiskit-aer": "0.17.2",
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "pandas": "3.0.6"
+    },
+    "core_source_sha256": "4dc9d8556f464f9dd83a1992f9d0628eb923686cfb7b27aa32fbf64ed4612e35",
+    "created_at_utc": "2026-10-10T18:47:23.555425+00:00"
+  },
+  "description": "Single cold run per model; descriptive timings, not a hardware prediction. Data download and model fitting excluded.",
+  "records": [
+    {
+      "family": "gaussian",
+      "threshold": 0.1,
+      "model_loading_seconds": 9.854196105152369e-05,
+      "grid_construction_seconds": 0.01827845798106864,
+      "exact_grid_tail_seconds": 4.908296978101134e-05,
+      "continuous_reference_seconds": 5.783297820016742e-05,
+      "oracle_construction_seconds": 0.000520791974849999,
+      "iqae_seconds": 0.3795424589770846,
+      "exact_grid_tail": 0.0037558615374517924,
+      "continuous_tail": 0.006151585219418946,
+      "iqae_queries": 2560
+    },
+    {
+      "family": "student",
+      "threshold": 0.1,
+      "model_loading_seconds": 0.00017795898020267487,
+      "grid_construction_seconds": 0.017848916992079467,
+      "exact_grid_tail_seconds": 3.058300353586674e-05,
+      "continuous_reference_seconds": 0.030372167006134987,
+      "oracle_construction_seconds": 0.0006675420445390046,
+      "iqae_seconds": 0.3607991249882616,
+      "exact_grid_tail": 0.00629566493614726,
+      "continuous_tail": 0.010364767068909493,
+      "iqae_queries": 2560
+    }
+  ]
+}

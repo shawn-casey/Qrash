@@ -1,0 +1,65 @@
+scenario,method,target_rmse,first_observed_budget,status
+gaussian_0.050,IS,0.01,256.0,Reached
+gaussian_0.050,MC,0.01,2048.0,Reached
+gaussian_0.050,MLAE,0.01,1152.0,Reached
+gaussian_0.050,Sobol,0.01,256.0,Reached
+gaussian_0.100,IS,0.01,64.0,Reached
+gaussian_0.100,MC,0.01,64.0,Reached
+gaussian_0.100,MLAE,0.01,64.0,Reached
+gaussian_0.100,Sobol,0.01,64.0,Reached
+student_0.050,IS,0.01,512.0,Reached
+student_0.050,MC,0.01,1024.0,Reached
+student_0.050,MLAE,0.01,1152.0,Reached
+student_0.050,Sobol,0.01,256.0,Reached
+student_0.100,IS,0.01,64.0,Reached
+student_0.100,MC,0.01,256.0,Reached
+student_0.100,MLAE,0.01,256.0,Reached
+student_0.100,Sobol,0.01,256.0,Reached
+gaussian_0.050,IS,0.005,1024.0,Reached
+gaussian_0.050,MC,0.005,4096.0,Reached
+gaussian_0.050,MLAE,0.005,2240.0,Reached
+gaussian_0.050,Sobol,0.005,512.0,Reached
+gaussian_0.100,IS,0.005,64.0,Reached
+gaussian_0.100,MC,0.005,256.0,Reached
+gaussian_0.100,MLAE,0.005,256.0,Reached
+gaussian_0.100,Sobol,0.005,256.0,Reached
+student_0.050,IS,0.005,1024.0,Reached
+student_0.050,MC,0.005,,Not reached in tested budgets
+student_0.050,MLAE,0.005,1152.0,Reached
+student_0.050,Sobol,0.005,512.0,Reached
+student_0.100,IS,0.005,64.0,Reached
+student_0.100,MC,0.005,512.0,Reached
+student_0.100,MLAE,0.005,256.0,Reached
+student_0.100,Sobol,0.005,256.0,Reached
+gaussian_0.050,IS,0.002,,Not reached in tested budgets
+gaussian_0.050,MC,0.002,,Not reached in tested budgets
+gaussian_0.050,MLAE,0.002,2240.0,Reached
+gaussian_0.050,Sobol,0.002,1024.0,Reached
+gaussian_0.100,IS,0.002,64.0,Reached
+gaussian_0.100,MC,0.002,2048.0,Reached
+gaussian_0.100,MLAE,0.002,1152.0,Reached
+gaussian_0.100,Sobol,0.002,512.0,Reached
+student_0.050,IS,0.002,,Not reached in tested budgets
+student_0.050,MC,0.002,,Not reached in tested budgets
+student_0.050,MLAE,0.002,4352.0,Reached
+student_0.050,Sobol,0.002,1024.0,Reached
+student_0.100,IS,0.002,64.0,Reached
+student_0.100,MC,0.002,4096.0,Reached
+student_0.100,MLAE,0.002,576.0,Reached
+student_0.100,Sobol,0.002,1024.0,Reached
+gaussian_0.050,IS,0.001,,Not reached in tested budgets
+gaussian_0.050,MC,0.001,,Not reached in tested budgets
+gaussian_0.050,MLAE,0.001,,Not reached in tested budgets
+gaussian_0.050,Sobol,0.001,2048.0,Reached
+gaussian_0.100,IS,0.001,64.0,Reached
+gaussian_0.100,MC,0.001,,Not reached in tested budgets
+gaussian_0.100,MLAE,0.001,1152.0,Reached
+gaussian_0.100,Sobol,0.001,1024.0,Reached
+student_0.050,IS,0.001,,Not reached in tested budgets
+student_0.050,MC,0.001,,Not reached in tested budgets
+student_0.050,MLAE,0.001,,Not reached in tested budgets
+student_0.050,Sobol,0.001,2048.0,Reached
+student_0.100,IS,0.001,256.0,Reached
+student_0.100,MC,0.001,,Not reached in tested budgets
+student_0.100,MLAE,0.001,2240.0,Reached
+student_0.100,Sobol,0.001,2048.0,Reached

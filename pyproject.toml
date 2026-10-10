@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tailrisk-lab"
+version = "0.1.0"
+description = "Qiskit amplitude estimation for portfolio tail risk"
+requires-python = ">=3.11"
+
+[tool.setuptools.packages.find]
+include = ["tailrisk*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
